@@ -1,0 +1,38 @@
+<form id="login_form">
+    ID : <input type="text" id="id"/> <br/>
+    PASSWORD : <input type="password" id="pwd"/>
+    <button type="submit">login</button>
+</form>
+
+<script>
+    document.getElementById("login_form").addEventListener('submit', function(event) {
+        
+        //자바스크립트로 사용자로부터 입력받은 값을 가져온다.
+        const id = document.getElementById("id").value;
+        const password = document.getElementById("pwd").value;
+
+        //사용자 입력 데이터를 서버에 전송 AJAX 요청 만들기
+        
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/login_process', true);
+
+        //AJAX 응답 설정하기
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+                if(xhr.status === 200) {
+                    const response = xhr.responseText;
+                    console.login_form(response);
+                } else {
+                    console.error('request failed' + xhr.status);
+                }
+            }
+        };
+
+        //데이터 전송 준비하기
+        const formData = new formData();
+        formData.append('id',id);
+        formData.append('password',pwd);
+
+        xhr.send(formData);
+    });
+</script>
